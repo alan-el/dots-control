@@ -3,6 +3,10 @@ package com.zqn.dotscntl;
 /* Just For GPIO Output Mode */
 
 public class GPIO {
+
+    public static final int GPIO_MODE_TYPE_INPUT = 0;
+    public static final int GPIO_MODE_TYPE_OUTPUT = 1;
+
     private int num;
 
     GPIO(int num){

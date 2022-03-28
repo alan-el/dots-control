@@ -12,91 +12,9 @@
 extern "C"{
 #endif
 
-int gpio_export(char* gpio_num)
-{
-    FILE *fp;
+#define GPIO_MODE_TYPE_INPUT "in"
+#define GPIO_MODE_TYPE_OUTPUT "out"
 
-    char *gpio_ept_pathname = "/sys/class/gpio/export";
-
-    fp = fopen(gpio_ept_pathname, "w");
-
-    if(fp == NULL)
-    {
-        printf("%s: can't open file /sys/class/gpio/export\n", __func__);
-        return -1;
-    }
-
-    if(1 != fwrite(gpio_num, strlen(gpio_num), 1, fp))
-    {
-        printf("%s: can't write %s to %s\n", __func__, gpio_num, gpio_ept_pathname);
-        fclose(fp);
-        return -1;
-    }
-
-    fclose(fp);
-
-    return 0;
-}
-
-
-int gpio_unexport(char* gpio_num)
-{
-    FILE *fp;
-
-    char *gpio_uept_pathname = "/sys/class/gpio/unexport";
-
-    fp = fopen(gpio_uept_pathname, "w");
-
-    if(fp == NULL)
-    {
-        printf("%s: can't open file /sys/class/gpio/unexport\n", __func__);
-        return -1;
-    }
-
-    if(1 != fwrite(gpio_num, strlen(gpio_num), 1, fp))
-    {
-        printf("%s: can't write %s to %s\n", __func__, gpio_num, gpio_uept_pathname);
-        fclose(fp);
-        return -1;
-    }
-
-    fclose(fp);
-
-    return 0;
-}
-
-int gpio_set_direction(char *gpio_num, char *dir)
-{
-    FILE *fp;
-
-    char fmt[128];
-
-    if(strcmp(dir, "in") != 0 && strcmp(dir, "out") != 0)
-    {
-        printf("Only \"in\" or \"our\" can be chosen as directions.\n");
-        return -1;
-    }
-
-    sprintf(fmt, "/sys/class/gpio/gpio%s/direction", gpio_num);
-
-    fp = fopen(fmt, "w");
-
-    if(fp == NULL)
-    {
-        printf("%s: can't open file /sys/class/gpio%s/direction\n", __func__, gpio_num);
-        return -1;
-    }
-
-    if(1 != fwrite(dir, strlen(dir), 1, fp))
-    {
-        printf("%s: can't write %s to %s\n", __func__, dir, fmt);
-        fclose(fp);
-        return -1;
-    }
-
-    fclose(fp);
-    return 0;
-}
 
 int gpio_set_value(char *gpio_num, char *val)
 {
@@ -131,6 +49,7 @@ int gpio_set_value(char *gpio_num, char *val)
     return 0;
 }
 
+/* Reserve for future development. */
 int gpio_get_value(char *gpio_num, char *val)
 {
     FILE *fp;
@@ -156,28 +75,123 @@ int gpio_get_value(char *gpio_num, char *val)
 JNIEXPORT void JNICALL
 Java_com_zqn_dotscntl_GPIO_export(JNIEnv *env, jobject thiz, jint gpio_num)
 {
+    FILE *fp;
 
+    char *gpio_ept_pathname = "/sys/class/gpio/export";
+
+    fp = fopen(gpio_ept_pathname, "w");
+
+    if(fp == NULL)
+    {
+        /* TODO Using Andorid Log method instead. */
+        printf("%s: can't open file /sys/class/gpio/export\n", __func__);
+        return;
+    }
+
+    char num[8];
+    memset(num, 0, sizeof(num));
+    sprintf(num, "%d", gpio_num);
+
+    if(1 != fwrite(num, strlen(num), 1, fp))
+    {
+        printf("%s: can't write %s to %s\n", __func__, num, gpio_ept_pathname);
+        fclose(fp);
+        return;
+    }
+
+    fclose(fp);
 }
 
 
 JNIEXPORT void JNICALL
-Java_com_zqn_dotscntl_GPIO_unexport(JNIEnv *env, jobject thiz, jint gpio_num) {
-    // TODO: implement unexport()
+Java_com_zqn_dotscntl_GPIO_unexport(JNIEnv *env, jobject thiz, jint gpio_num)
+{
+    FILE *fp;
+
+    char *gpio_uept_pathname = "/sys/class/gpio/unexport";
+
+    fp = fopen(gpio_uept_pathname, "w");
+
+    if(fp == NULL)
+    {
+        printf("%s: can't open file /sys/class/gpio/unexport\n", __func__);
+        return;
+    }
+
+    char num[8];
+    memset(num, 0, sizeof(num));
+    sprintf(num, "%d", gpio_num);
+
+    if(1 != fwrite(num, strlen(num), 1, fp))
+    {
+        printf("%s: can't write %s to %s\n", __func__, num, gpio_uept_pathname);
+        fclose(fp);
+        return;
+    }
+
+    fclose(fp);
 }
 
 JNIEXPORT void JNICALL
-Java_com_zqn_dotscntl_GPIO_setDirection(JNIEnv *env, jobject thiz, jint gpio_num, jint dirct) {
-    // TODO: implement setDirection()
+Java_com_zqn_dotscntl_GPIO_setDirection(JNIEnv *env, jobject thiz, jint gpio_num, jint dirct)
+{
+    FILE *fp;
+
+    char gpio_sd_pathname[128];
+    memset(gpio_sd_pathname, 0, sizeof(gpio_sd_pathname));
+    sprintf(gpio_sd_pathname, "/sys/class/gpio/gpio%d/direction", gpio_num);
+
+    fp = fopen(gpio_sd_pathname, "w");
+
+    if(fp == NULL)
+    {
+        printf("%s: can't open file %s\n", __func__, gpio_sd_pathname);
+        return;
+    }
+
+    char dir[8];
+    memset(dir, 0, sizeof(dir));
+    if(0 == dirct)
+    {
+        sprintf(dir, GPIO_MODE_TYPE_INPUT);
+    }
+    else if(1 == dirct)
+    {
+        sprintf(dir, GPIO_MODE_TYPE_OUTPUT);
+    }
+    else
+    {
+        /* TODO error dirct value */
+    }
+
+    if(1 != fwrite(dir, strlen(dir), 1, fp))
+    {
+        printf("%s: can't write %s to %s\n", __func__, dir, gpio_sd_pathname);
+        fclose(fp);
+        return;
+    }
+
+    fclose(fp);
 }
 
 JNIEXPORT void JNICALL
-Java_com_zqn_dotscntl_GPIO_setHigh(JNIEnv *env, jobject thiz, jint gpio_num) {
-    // TODO: implement setHigh()
+Java_com_zqn_dotscntl_GPIO_setHigh(JNIEnv *env, jobject thiz, jint gpio_num)
+{
+    char num[8];
+    memset(num, 0, sizeof(num));
+    sprintf(num,"%d", gpio_num);
+
+    gpio_set_value(num, "1");
 }
 
 JNIEXPORT void JNICALL
-Java_com_zqn_dotscntl_GPIO_setLow(JNIEnv *env, jobject thiz, jint gpio_num) {
-    // TODO: implement setLow()
+Java_com_zqn_dotscntl_GPIO_setLow(JNIEnv *env, jobject thiz, jint gpio_num)
+{
+    char num[8];
+    memset(num, 0, sizeof(num));
+    sprintf(num,"%d", gpio_num);
+
+    gpio_set_value(num, "0");
 }
 
 #ifdef __cplusplus

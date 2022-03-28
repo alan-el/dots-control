@@ -42,7 +42,7 @@ JNIEXPORT void JNICALL
 Java_com_zqn_dotscntl_SerialPort_close(JNIEnv *env, jobject thiz, jint fd) {
     int ret = close(fd);
     if (ret != 0)
-        // TODO Using Andorid Log instead.
+        /* TODO Using Andorid Log method instead. */
         perror("uart_close:");
 }
 
