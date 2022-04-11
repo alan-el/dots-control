@@ -4,13 +4,18 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include <jni.h>
+#include <android/log.h>
 
+#include <jni.h>
 #include "gpioz.h"
 
 #ifdef __cplusplus
 extern "C"{
 #endif
+
+#define GPIOZ_LOG_TAG "gpioz.c"
+#define GPIOZ_LOGI(...) __android_log_print(ANDROID_LOG_INFO,GPIOZ_LOG_TAG,__VA_ARGS__)
+#define GPIOZ_LOGE(...) __android_log_print(ANDROID_LOG_ERROR, GPIOZ_LOG_TAG, __VA_ARGS__)
 
 #define GPIO_MODE_TYPE_INPUT "in"
 #define GPIO_MODE_TYPE_OUTPUT "out"
@@ -70,6 +75,8 @@ int gpio_get_value(char *gpio_num, char *val)
         fclose(fp);
         return -1;
     }
+
+    return 0;
 }
 
 JNIEXPORT void JNICALL
@@ -83,8 +90,7 @@ Java_com_zqn_dotscntl_GPIO_export(JNIEnv *env, jobject thiz, jint gpio_num)
 
     if(fp == NULL)
     {
-        /* TODO Using Andorid Log method instead. */
-        printf("%s: can't open file /sys/class/gpio/export\n", __func__);
+        GPIOZ_LOGE("%s: can't open file /sys/class/gpio/export\n", __func__);
         return;
     }
 
@@ -94,7 +100,7 @@ Java_com_zqn_dotscntl_GPIO_export(JNIEnv *env, jobject thiz, jint gpio_num)
 
     if(1 != fwrite(num, strlen(num), 1, fp))
     {
-        printf("%s: can't write %s to %s\n", __func__, num, gpio_ept_pathname);
+        GPIOZ_LOGE("%s: can't write %s to %s\n", __func__, num, gpio_ept_pathname);
         fclose(fp);
         return;
     }
@@ -114,7 +120,7 @@ Java_com_zqn_dotscntl_GPIO_unexport(JNIEnv *env, jobject thiz, jint gpio_num)
 
     if(fp == NULL)
     {
-        printf("%s: can't open file /sys/class/gpio/unexport\n", __func__);
+        GPIOZ_LOGE("%s: can't open file /sys/class/gpio/unexport\n", __func__);
         return;
     }
 
@@ -124,7 +130,7 @@ Java_com_zqn_dotscntl_GPIO_unexport(JNIEnv *env, jobject thiz, jint gpio_num)
 
     if(1 != fwrite(num, strlen(num), 1, fp))
     {
-        printf("%s: can't write %s to %s\n", __func__, num, gpio_uept_pathname);
+        GPIOZ_LOGE("%s: can't write %s to %s\n", __func__, num, gpio_uept_pathname);
         fclose(fp);
         return;
     }
@@ -145,7 +151,7 @@ Java_com_zqn_dotscntl_GPIO_setDirection(JNIEnv *env, jobject thiz, jint gpio_num
 
     if(fp == NULL)
     {
-        printf("%s: can't open file %s\n", __func__, gpio_sd_pathname);
+        GPIOZ_LOGE("%s: can't open file %s\n", __func__, gpio_sd_pathname);
         return;
     }
 
@@ -161,12 +167,13 @@ Java_com_zqn_dotscntl_GPIO_setDirection(JNIEnv *env, jobject thiz, jint gpio_num
     }
     else
     {
-        /* TODO error dirct value */
+        GPIOZ_LOGE("Invaild direct value: %d\n", dirct);
+        return;
     }
 
     if(1 != fwrite(dir, strlen(dir), 1, fp))
     {
-        printf("%s: can't write %s to %s\n", __func__, dir, gpio_sd_pathname);
+        GPIOZ_LOGE("%s: can't write %s to %s\n", __func__, dir, gpio_sd_pathname);
         fclose(fp);
         return;
     }
