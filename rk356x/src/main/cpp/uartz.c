@@ -10,7 +10,7 @@
 #include <android/log.h>
 
 #include <jni.h>
-#include "uartz.h"
+#include "include/uartz.h"
 
 #ifdef __cplusplus
 extern "C"{

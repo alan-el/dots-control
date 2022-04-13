@@ -7,7 +7,7 @@
 #include <android/log.h>
 
 #include <jni.h>
-#include "gpioz.h"
+#include "include/gpioz.h"
 
 #ifdef __cplusplus
 extern "C"{
