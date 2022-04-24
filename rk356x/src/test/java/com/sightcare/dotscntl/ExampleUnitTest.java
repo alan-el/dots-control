@@ -1,4 +1,4 @@
-package com.zqn.dotscntl;
+package com.sightcare.dotscntl;
 
 import org.junit.Test;
 

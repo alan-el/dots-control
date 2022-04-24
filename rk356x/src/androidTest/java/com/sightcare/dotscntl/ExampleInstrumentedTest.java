@@ -1,4 +1,4 @@
-package com.zqn.dotscntl;
+package com.sightcare.dotscntl;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.zqn.dotscntl", appContext.getPackageName());
+        assertEquals("com.sightcare.dotscntl", appContext.getPackageName());
     }
 }

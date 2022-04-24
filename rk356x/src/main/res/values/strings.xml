@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">DotsCntl</string>
+    <string name="app_name">触点控制</string>
+    <string name="gpio3_c2_high">GPIO3_C2输出高电平</string>
+    <string name="gpio3_c2_low">GPIO3_C2输出低电平</string>
+    <string name="uart3tx">UART3发送</string>
+    <string name="uart3rx">UART3接收</string>
+    <string name="uart4tx">UART4发送</string>
+    <string name="uart4rx">UART4接收</string>
+    <string name="uart3_rx_data">uart3 收到的数据</string>
+    <string name="uart4_rx_data">uart4 收到的数据</string>
 </resources>

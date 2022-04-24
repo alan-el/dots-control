@@ -1,4 +1,4 @@
-package com.zqn.dotscntl;
+package com.sightcare.dotscntl;
 
 /* Just For GPIO Output Mode */
 
@@ -11,6 +11,11 @@ public class GPIO {
 
     GPIO(int num){
         this.num = num;
+    }
+
+    public int getNum()
+    {
+        return num;
     }
 
     public native void export(int gpio_num);

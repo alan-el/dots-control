@@ -80,7 +80,7 @@ int gpio_get_value(char *gpio_num, char *val)
 }
 
 JNIEXPORT void JNICALL
-Java_com_zqn_dotscntl_GPIO_export(JNIEnv *env, jobject thiz, jint gpio_num)
+Java_com_sightcare_dotscntl_GPIO_export(JNIEnv *env, jobject thiz, jint gpio_num)
 {
     FILE *fp;
 
@@ -110,7 +110,7 @@ Java_com_zqn_dotscntl_GPIO_export(JNIEnv *env, jobject thiz, jint gpio_num)
 
 
 JNIEXPORT void JNICALL
-Java_com_zqn_dotscntl_GPIO_unexport(JNIEnv *env, jobject thiz, jint gpio_num)
+Java_com_sightcare_dotscntl_GPIO_unexport(JNIEnv *env, jobject thiz, jint gpio_num)
 {
     FILE *fp;
 
@@ -139,7 +139,7 @@ Java_com_zqn_dotscntl_GPIO_unexport(JNIEnv *env, jobject thiz, jint gpio_num)
 }
 
 JNIEXPORT void JNICALL
-Java_com_zqn_dotscntl_GPIO_setDirection(JNIEnv *env, jobject thiz, jint gpio_num, jint dirct)
+Java_com_sightcare_dotscntl_GPIO_setDirection(JNIEnv *env, jobject thiz, jint gpio_num, jint dirct)
 {
     FILE *fp;
 
@@ -182,7 +182,7 @@ Java_com_zqn_dotscntl_GPIO_setDirection(JNIEnv *env, jobject thiz, jint gpio_num
 }
 
 JNIEXPORT void JNICALL
-Java_com_zqn_dotscntl_GPIO_setHigh(JNIEnv *env, jobject thiz, jint gpio_num)
+Java_com_sightcare_dotscntl_GPIO_setHigh(JNIEnv *env, jobject thiz, jint gpio_num)
 {
     char num[8];
     memset(num, 0, sizeof(num));
@@ -192,7 +192,7 @@ Java_com_zqn_dotscntl_GPIO_setHigh(JNIEnv *env, jobject thiz, jint gpio_num)
 }
 
 JNIEXPORT void JNICALL
-Java_com_zqn_dotscntl_GPIO_setLow(JNIEnv *env, jobject thiz, jint gpio_num)
+Java_com_sightcare_dotscntl_GPIO_setLow(JNIEnv *env, jobject thiz, jint gpio_num)
 {
     char num[8];
     memset(num, 0, sizeof(num));

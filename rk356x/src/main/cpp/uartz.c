@@ -20,17 +20,8 @@ extern "C"{
 #define UARTZ_LOGI(...) __android_log_print(ANDROID_LOG_INFO,UARTZ_LOG_TAG,__VA_ARGS__)
 #define UARTZ_LOGE(...) __android_log_print(ANDROID_LOG_ERROR, UARTZ_LOG_TAG, __VA_ARGS__)
 
-JNIEXPORT jstring JNICALL
-Java_com_zqn_dotscntl_SerialPort_NativeFoo(JNIEnv *env, jobject thiz, jint num)
-{
-    char ret[256];
-    sprintf(ret, "%d From UARTZ.\n", num);
-    jstring back = (*env)->NewStringUTF(env, ret);
-    return back;
-}
-
 JNIEXPORT jint JNICALL
-Java_com_zqn_dotscntl_SerialPort_open(JNIEnv *env, jobject thiz, jstring path)
+Java_com_sightcare_dotscntl_SerialPort_open(JNIEnv *env, jobject thiz, jstring path)
 {
     const char *pathname = (*env)->GetStringUTFChars(env, path, 0);
 
@@ -40,6 +31,8 @@ Java_com_zqn_dotscntl_SerialPort_open(JNIEnv *env, jobject thiz, jstring path)
     }
 
     jint ret = open(pathname, O_RDWR | O_NOCTTY);
+    if(ret == -1)
+        UARTZ_LOGE("open failed.\n");
 
     (*env)->ReleaseStringUTFChars(env, path, pathname);
 
@@ -47,15 +40,15 @@ Java_com_zqn_dotscntl_SerialPort_open(JNIEnv *env, jobject thiz, jstring path)
 }
 
 JNIEXPORT void JNICALL
-Java_com_zqn_dotscntl_SerialPort_close(JNIEnv *env, jobject thiz, jint fd)
+Java_com_sightcare_dotscntl_SerialPort_close(JNIEnv *env, jobject thiz, jint fd)
 {
     int ret = close(fd);
-    if (ret != 0)
-        UARTZ_LOGE("uart_close:");
+    if (ret == -1)
+        UARTZ_LOGE("close failed.\n");
 }
 
 JNIEXPORT jint JNICALL
-Java_com_zqn_dotscntl_SerialPort_set(JNIEnv *env, jobject thiz, jint fd, jint baudrate) {
+Java_com_sightcare_dotscntl_SerialPort_set(JNIEnv *env, jobject thiz, jint fd, jint baudrate) {
     struct termios term;
 
     int ret;
@@ -82,15 +75,15 @@ Java_com_zqn_dotscntl_SerialPort_set(JNIEnv *env, jobject thiz, jint fd, jint ba
     }
 
     ret = tcgetattr(fd, &term);
-    if (ret < 0)
+    if (ret == -1)
         return ret;
 
     ret = cfsetispeed(&term, baudrate);
-    if (ret < 0)
+    if (ret == -1)
         return ret;
 
     ret = cfsetospeed(&term, baudrate);
-    if (ret < 0)
+    if (ret == -1)
         return ret;
 
     cfmakeraw(&term);
@@ -99,45 +92,44 @@ Java_com_zqn_dotscntl_SerialPort_set(JNIEnv *env, jobject thiz, jint fd, jint ba
     term.c_cc[VMIN] = 1;
 
     ret = tcsetattr(fd, TCSANOW, &term);
-    if (ret < 0)
+    if (ret == -1)
         return ret;
 
     return 0;
 }
 
 JNIEXPORT jint JNICALL
-Java_com_zqn_dotscntl_SerialPort_send(JNIEnv *env, jobject thiz, jint fd, jbyteArray tb,
+Java_com_sightcare_dotscntl_SerialPort_send(JNIEnv *env, jobject thiz, jint fd, jbyteArray tb,
                                       jint count)
 {
     jbyte *jtb = (*env)->GetByteArrayElements(env, tb, 0);
 
     int ret = write(fd, jtb, count);
+    if(ret != count)
+        UARTZ_LOGE("failed/partial send.\n");
 
     (*env)->ReleaseByteArrayElements(env, tb, jtb, 0);
-
-    if (ret < 0)
-    {
-        UARTZ_LOGE("uart_send:");
-        return -1;
-    }
 
     return ret;
 }
 
 JNIEXPORT jbyteArray JNICALL
-Java_com_zqn_dotscntl_SerialPort_receive(JNIEnv *env, jobject thiz, jint fd, jint count)
+Java_com_sightcare_dotscntl_SerialPort_receive(JNIEnv *env, jobject thiz, jint fd, jint count)
 {
     jbyte rb[256];
     int ret = read(fd, rb, count);
 
-    if (ret < 0)
+    if (ret == -1)
     {
-        UARTZ_LOGE("uart_receive:");
+        UARTZ_LOGE("read.\n");
         jbyte ret_fail = -1;
         jbyteArray fail_ret = (*env)->NewByteArray(env, 1);
         (*env)->SetByteArrayRegion(env, fail_ret, 0, 0, &ret_fail);
         return fail_ret;
     }
+
+    else if (ret != count)
+        UARTZ_LOGE("partial receive.\n");
 
     jbyteArray jrb = (*env)->NewByteArray(env, ret);
     (*env)->SetByteArrayRegion(env, jrb, 0, ret - 1, rb);
