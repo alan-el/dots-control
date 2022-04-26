@@ -77,7 +77,8 @@ public class SerialPort {
             byte[] b= {0x00};
             return b;
         }
-        return receive(fd, count);
+        byte[] ret = receive(fd, count);
+        return ret;
     }
 
     private native int open(String path);

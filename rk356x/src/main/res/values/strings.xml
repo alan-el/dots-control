@@ -8,4 +8,8 @@
     <string name="uart4rx">UART4接收</string>
     <string name="uart3_rx_data">uart3 收到的数据</string>
     <string name="uart4_rx_data">uart4 收到的数据</string>
+    <string name="uart3open">打开UART3</string>
+    <string name="uart4open">打开UART4</string>
+    <string name="uart3close">关闭UART3</string>
+    <string name="uart4close">关闭UART4</string>
 </resources>

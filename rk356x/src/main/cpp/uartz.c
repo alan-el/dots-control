@@ -132,7 +132,7 @@ Java_com_sightcare_dotscntl_SerialPort_receive(JNIEnv *env, jobject thiz, jint f
         UARTZ_LOGE("partial receive.\n");
 
     jbyteArray jrb = (*env)->NewByteArray(env, ret);
-    (*env)->SetByteArrayRegion(env, jrb, 0, ret - 1, rb);
+    (*env)->SetByteArrayRegion(env, jrb, 0, ret, rb);
 
     return jrb;
 }

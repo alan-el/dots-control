@@ -47,11 +47,26 @@ public class FooActivity extends AppCompatActivity {
     {
         int viewID = view.getId();
 
-        if(viewID == binding.buttonUART3TX.getId())
+        if(viewID == binding.buttonUART3Open.getId())
         {
             serialPort3.openPort();
             serialPort3.setBaudrate(9600);
-
+        }
+        else if(viewID == binding.buttonUART4Open.getId())
+        {
+            serialPort4.openPort();
+            serialPort4.setBaudrate(9600);
+        }
+        else if(viewID == binding.buttonUART3Close.getId())
+        {
+            serialPort3.closePort();
+        }
+        else if(viewID == binding.buttonUART4Close.getId())
+        {
+            serialPort4.closePort();
+        }
+        else if(viewID == binding.buttonUART3TX.getId())
+        {
             serialPort3.sendData(foo);
         }
         else if(viewID == binding.buttonUART4TX.getId())

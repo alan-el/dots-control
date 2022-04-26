@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
     tools:context=".FooActivity">
 
@@ -15,6 +15,7 @@
         android:backgroundTint="#F44336"
         android:onClick="GPIO3_C2_Output"
         android:text="@string/gpio3_c2_high"
+        android:textColor="#000000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,9 +36,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="180dp"
+        android:backgroundTint="#8BC34A"
         android:onClick="UARTProcess"
         android:text="@string/uart3tx"
+        android:textColor="#37474F"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonGPIO3C2High" />
 
@@ -47,8 +50,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginTop="30dp"
+        android:backgroundTint="#FFC107"
         android:onClick="UARTProcess"
         android:text="@string/uart3rx"
+        android:textColor="#006064"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonUART3TX" />
 
@@ -57,9 +62,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="180dp"
+        android:backgroundTint="#8BC34A"
         android:onClick="UARTProcess"
         android:text="@string/uart4tx"
+        android:textColor="#37474F"
         app:layout_constraintStart_toEndOf="@+id/buttonUART3TX"
         app:layout_constraintTop_toBottomOf="@+id/buttonGPIO3C2Low" />
 
@@ -69,15 +76,17 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
         android:layout_marginTop="30dp"
+        android:backgroundTint="#FFC107"
         android:onClick="UARTProcess"
         android:text="@string/uart4rx"
+        android:textColor="#006064"
         app:layout_constraintStart_toEndOf="@+id/buttonUART3RX"
         app:layout_constraintTop_toBottomOf="@+id/buttonUART4TX" />
 
     <TextView
         android:id="@+id/textViewU3RX"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="170dp"
+        android:layout_height="90dp"
         android:layout_marginStart="15dp"
         android:layout_marginTop="30dp"
         android:text="@string/uart3_rx_data"
@@ -86,11 +95,61 @@
 
     <TextView
         android:id="@+id/textViewU4RX"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
+        android:layout_width="170dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
         android:text="@string/uart4_rx_data"
         app:layout_constraintStart_toEndOf="@+id/textViewU3RX"
         app:layout_constraintTop_toBottomOf="@+id/buttonUART4RX" />
+
+    <Button
+        android:id="@+id/buttonUART3Open"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginBottom="30dp"
+        android:backgroundTint="#2196F3"
+        android:onClick="UARTProcess"
+        android:text="@string/uart3open"
+        android:textColor="#212121"
+        app:layout_constraintBottom_toTopOf="@+id/buttonUART3Close"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/buttonUART4Open"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginBottom="30dp"
+        android:backgroundTint="#2196F3"
+        android:onClick="UARTProcess"
+        android:text="@string/uart4open"
+        android:textColor="#212121"
+        app:layout_constraintBottom_toTopOf="@+id/buttonUART4Close"
+        app:layout_constraintStart_toEndOf="@+id/buttonUART3Open" />
+
+    <Button
+        android:id="@+id/buttonUART3Close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginBottom="30dp"
+        android:backgroundTint="#D50000"
+        android:onClick="UARTProcess"
+        android:text="@string/uart3close"
+        app:layout_constraintBottom_toTopOf="@+id/buttonUART3TX"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/buttonUART4Close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginBottom="30dp"
+        android:backgroundTint="#D50000"
+        android:onClick="UARTProcess"
+        android:text="@string/uart4close"
+        app:layout_constraintBottom_toTopOf="@+id/buttonUART4TX"
+        app:layout_constraintStart_toEndOf="@+id/buttonUART3Close" />
 </androidx.constraintlayout.widget.ConstraintLayout>
