@@ -1,10 +1,11 @@
 package com.sightcare.dotscntl;
 
-import androidx.appcompat.app.AppCompatActivity;
+import static com.sightcare.dotscntl.DotsControlPacket.*;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.sightcare.dotscntl.databinding.ActivityFooBinding;
 
@@ -26,7 +27,18 @@ public class FooActivity extends AppCompatActivity {
         binding = ActivityFooBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        gpio3_C2.setDirection(gpio3_C2.getNum(), gpio3_C2.GPIO_MODE_TYPE_OUTPUT);
+        gpio3_C2.setDirection(gpio3_C2.getNum(), GPIO.GPIO_MODE_TYPE_OUTPUT);
+
+        /* TODO test on board */
+        short[] payload = { 0x00, 0x11, 0x22, 0x33,
+                            0x44, 0x55, 0x66, 0x77,
+                            0x88, 0x99, 0xAA, 0xBB,
+                            0xCC, 0xDD, 0xEE, 0xFF};
+
+        DotsControlPacket dcp = new DotsControlPacket(R2S_COMMAND_ALL_DATA, payload.length, 1, payload);
+        byte[] packet = dcp.buildPacket();
+
+        serialPort3.sendData(packet);
     }
 
     public void GPIO3_C2_Output(View view)

@@ -30,7 +30,7 @@ Java_com_sightcare_dotscntl_SerialPort_open(JNIEnv *env, jobject thiz, jstring p
         pathname = "/dev/ttyS0";
     }
 
-    jint ret = open(pathname, O_RDWR | O_NOCTTY);
+    jint ret = open(pathname, O_RDWR | O_NOCTTY | O_NONBLOCK);
     if(ret == -1)
         UARTZ_LOGE("open failed.\n");
 

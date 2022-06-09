@@ -20,6 +20,7 @@ add_library(
 
         uartz.c
         gpioz.c
+        dots_control_packet.c
 )
 
 # Searches for a specified prebuilt library and stores the path as a
